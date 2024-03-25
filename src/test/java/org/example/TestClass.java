@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.domain.Student;
+import org.example.domain.Tema;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,12 +38,58 @@ public class TestClass {
         TestClass.service = new Service(studentXMLRepository, studentValidator, temaXMLRepository, temaValidator, notaXMLRepository, notaValidator);
     }
 
+    // White box testing
+    @Test
+    public void addTema_Invalid_deadline_smallerThan1_ThrowsError() {
+
+        String nrTema = "100";
+        String descriere = "test";
+        int deadline = 0;
+        int primire = 11;
+
+        Tema tema = new Tema(nrTema, descriere, deadline, primire );
+
+        try{
+            service.addTema(tema);
+            assert(false);
+
+        }catch (ValidationException ve){
+            System.out.println("Validation Exception: " + ve.getMessage());
+            assert(true);
+
+        }
+
+    }
+
+    @Test
+    public void addTema_Invalid_deadline_greaterThan14_ThrowsError() {
+
+        String nrTema = "100";
+        String descriere = "test";
+        int deadline = 15;
+        int primire = 11;
+
+        Tema tema = new Tema(nrTema, descriere, deadline, primire );
+
+        try{
+            service.addTema(tema);
+            assert(false);
+
+        }catch (ValidationException ve){
+            System.out.println("Validation Exception: " + ve.getMessage());
+            assert(true);
+
+        }
+
+    }
+
+    // Black box testing
     @Test
     public void addStudent_ValidData_CreatedSuccessfully() {
         String idStudent = "test";
-        String numeStudent = "john";
-        int grupa = 934;
-        String email = "john_doe@yahoo.com";
+        String numeStudent = "stefan";
+        int grupa = 931;
+        String email = "stefan@yahoo.com";
         Student student = new Student(idStudent, numeStudent, grupa, email);
 
         try {
@@ -58,9 +105,9 @@ public class TestClass {
     @Test
     public void addStudent_EmptyId_ThrowError() {
         String idStudent = "";
-        String numeStudent = "john";
-        int grupa = 934;
-        String email = "john_doe@yahoo.com";
+        String numeStudent = "miguel";
+        int grupa = 931;
+        String email = "miguel@yahoo.com";
         Student student = new Student(idStudent, numeStudent, grupa, email);
 
         try {
@@ -75,9 +122,9 @@ public class TestClass {
     @Test
     public void addStudent_NullId_ThrowError() {
         String idStudent = null;
-        String numeStudent = "john";
-        int grupa = 934;
-        String email = "john_doe@yahoo.com";
+        String numeStudent = "miguel";
+        int grupa = 931;
+        String email = "miguel@yahoo.com";
         Student student = new Student(idStudent, numeStudent, grupa, email);
 
         try {
@@ -92,11 +139,10 @@ public class TestClass {
     @Test
     public void addStudent_DuplicateId_ThrowError() {
         String idStudent = "test";
-        String numeStudent = "john";
-        int grupa = 934;
-        String email = "john_doe@yahoo.com";
+        String numeStudent = "miguel";
+        int grupa = 931;
+        String email = "miguel@yahoo.com";
         Student student = new Student(idStudent, numeStudent, grupa, email);
-
         try {
             Student result = service.addStudent(student);
             assert(result == student);
@@ -106,4 +152,105 @@ public class TestClass {
         }
     }
 
+    @Test
+    public void addStudent_EmptyName_ThrowError() {
+        String idStudent = "test1";
+        String numeStudent = "";
+        int grupa = 931;
+        String email = "miguel@yahoo.com";
+        Student student = new Student(idStudent, numeStudent, grupa, email);
+
+        try {
+            service.addStudent(student);
+            assert(false);
+        } catch (ValidationException exception) {
+            System.out.println(exception);
+            assert(true);
+        }
+    }
+
+    @Test
+    public void addStudent_NullName_ThrowError() {
+        String idStudent = "test2";
+        String numeStudent = null;
+        int grupa = 931;
+        String email = "miguel@yahoo.com";
+        Student student = new Student(idStudent, numeStudent, grupa, email);
+
+        try {
+            service.addStudent(student);
+            assert(false);
+        } catch (ValidationException exception) {
+            System.out.println(exception);
+            assert(true);
+        }
+    }
+
+    @Test
+    public void addStudent_NegativeGroupNr_ThrowError() {
+        String idStudent = "test3";
+        String numeStudent = "miguel";
+        int grupa = -931;
+        String email = "miguel@yahoo.com";
+        Student student = new Student(idStudent, numeStudent, grupa, email);
+
+        try {
+            service.addStudent(student);
+            assert(false);
+        } catch (ValidationException exception) {
+            System.out.println(exception);
+            assert(true);
+        }
+    }
+
+    @Test
+    public void addStudent_EmptyEmail_ThrowError() {
+        String idStudent = "test4";
+        String numeStudent = "miguel";
+        int grupa = 931;
+        String email = "";
+        Student student = new Student(idStudent, numeStudent, grupa, email);
+
+        try {
+            service.addStudent(student);
+            assert(false);
+        } catch (ValidationException exception) {
+            System.out.println(exception);
+            assert(true);
+        }
+    }
+
+    @Test
+    public void addStudent_NullEmail_ThrowError() {
+        String idStudent = "test5";
+        String numeStudent = "miguel";
+        int grupa = 931;
+        String email = null;
+        Student student = new Student(idStudent, numeStudent, grupa, email);
+
+        try {
+            service.addStudent(student);
+            assert(false);
+        } catch (ValidationException exception) {
+            System.out.println(exception);
+            assert(true);
+        }
+    }
+
+    @Test
+    public void addStudent_LowerBoundGroupNr_ThrowError() {
+        String idStudent = "test6";
+        String numeStudent = "miguel";
+        int grupa = 0;
+        String email = "miguel@yahoo.com";
+        Student student = new Student(idStudent, numeStudent, grupa, email);
+
+        try {
+            Student result = service.addStudent(student);
+        } catch (ValidationException exception) {
+            System.out.println(exception);
+            assert(true);
+        }
+        assert(service.findStudent(idStudent) != null);
+    }
 }
