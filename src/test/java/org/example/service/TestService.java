@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertThrows;
 
-public class ServiceTest {
+public class TestService {
     @Test
     public void testAddStudentWithValidData() {
         // Arrange
@@ -41,6 +41,7 @@ public class ServiceTest {
 
     @Test
     public void testAddStudentWithNegativeGroup() {
+        //tested
         // Arrange
         Student student = new Student("12345", "John Doe", -5, "john@example.com");
         StudentValidator validator = new StudentValidator();
@@ -51,6 +52,7 @@ public class ServiceTest {
 
     @Test
     public void testAddStudentWithPositiveGroup() {
+        //tested
         // Arrange
         Student student = new Student("12345", "John Doe", 1023, "john@example.com");
         StudentValidator validator = new StudentValidator();
