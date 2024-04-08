@@ -402,4 +402,7 @@ public class TestClass {
         }
         assert(service.findStudent(idStudent) != null);
     }
+
+    // Integration testing
+
 }
